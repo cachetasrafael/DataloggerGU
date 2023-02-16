@@ -7,27 +7,27 @@ NTPClient timeClient(ntpUDP, "pool.ntp.org", TIME_OFFSET);
 AsyncWebServer server(80);
 WebSocketsServer webSocket(81);
 
-//Array for tests, location and switch
+//Array for tests, location and switch output strings
 char testNAME[5][30]={"PRE-TESTS AT ", "BENCH TESTS AT ", "GROUND TESTS AT ", "FLIGHT TESTS AT ", "END TESTS AT "};
 char locationNAME[5][30]={"POINT A", "POINT B", "POINT C", "POINT D", "POINT CEiiA"};
 char switchNAME[2][20]={"SWITCH ON", "SWITCH OFF"};
 
-//Time buffer
+//Buffer to store the time and date
 char time_buffer[25];
 
+//Time and date string
 String timeString;
 
+//RTC Object
 RTC_DS3231 RTC;
 
 int flagNTPTime = 0;
 int WiFiLost = 0;
 
+//time variables for SD Card LED when an append happens
 unsigned long previousMillis = 0;
-unsigned long previousMillis_WiFi = 0;
 unsigned long interval = 1000;
-unsigned long interval_WiFi = 60000;
 
-int ledSD_State = LOW;
 
 
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
@@ -52,7 +52,7 @@ void setup() {
   //Start UART
   Serial.begin(9600);
 
-  //Setup PIN
+  //Setup SWITCH pin as an input with pullup resistor (better debounce performance)
   pinMode(button_pin, INPUT_PULLUP);
   
   // initialize digital pin LED_SWITCH, LED_CARTAO, LED_WIFI as an output.
@@ -108,15 +108,16 @@ void setup() {
     delay(500);
     Serial.println(F("Connecting to WiFi..."));
   }
-  // Print local IP address and start web server
   Serial.println("WiFi connected.");
   digitalWrite(LED_WIFI, HIGH);
-  Serial.print("IP address: ");
+  // Print local IP address
+  Serial.print("IP address: "); 
   Serial.println(WiFi.localIP());
 
   // Initialize NTP client
   timeClient.begin();
 
+  // Create HTML page with the respective sockets being sent
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send_P(200,"text/html", 
     "<html>\
@@ -205,7 +206,7 @@ void lostWiFi(){
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if(Serial.available()){
+  if(Serial.available()){ //in case there's data to be read on the terminal
     parsing();
     if(outputSent){
       outputSent = false;
@@ -232,17 +233,13 @@ void loop() {
 
 // Write to the SD card (DON'T MODIFY THIS FUNCTION)
 void writeFile(fs::FS &fs, const char * path, const char * message) {
-  //Serial.printf("Writing file: %s\n", path);
 
   File file = fs.open(path, FILE_WRITE);
   if(!file) {
-    //Serial.println("Failed to open file for writing");
     return;
   }
   if(file.print(message)) {
-    //Serial.println("File written");
   } else {
-    //Serial.println("Write failed");
   }
   file.close();
 }
@@ -253,11 +250,8 @@ void appendFile(fs::FS &fs, const char * path, const char * message) {
   unsigned long currentMillis = millis();
 
 
-  //Serial.printf("Appending to file: %s\n", path);
-
   File file = fs.open(path, FILE_APPEND);
   if(!file) {
-    //Serial.println("Failed to open file for appending");
     return;
   }
   if(file.print(message)) {
@@ -274,11 +268,9 @@ void appendFile(fs::FS &fs, const char * path, const char * message) {
 
     // set the LED with the ledState of the variable:
     digitalWrite(LED_CARTAO, ledSD_State);
-  }
-    //Serial.println("Message appended");
-
+    }
   } else {
-    //Serial.println("Append failed");
+
   }
   file.close();
 }

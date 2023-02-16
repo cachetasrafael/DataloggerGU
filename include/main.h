@@ -27,13 +27,9 @@
 //Pins
 const int SD_CS = 5; // chip select pin for SD card
 const int button_pin=25; // button pin
-
-const int LED_SWITCH=32;  // led ativação do switch
-const int LED_CARTAO=27; // led criar ficheiro no cartao
-const int LED_WIFI=33; // led conexao wifi
-
-
-
+const int LED_SWITCH=32;  // led switch activation
+const int LED_CARTAO=27; // led create file on sd card
+const int LED_WIFI=33; // led wifi connection
 
 /* struct/enum/union definitions */
 
@@ -45,9 +41,7 @@ extern char switchNAME[2][20];
 extern int flagNTPTime;
 extern int ledSD_State;
 
-
-extern unsigned long previousMillis, interval, previousMillis_WiFi, interval_WiFi;
-
+extern unsigned long previousMillis, interval;
 
 /* function prototypes */
 void getTIME();

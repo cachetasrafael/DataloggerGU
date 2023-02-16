@@ -37,13 +37,13 @@ void debounce(){
       buttonState = reading;
 
       if (buttonState == LOW) {
-        getTIME();
+        getTIME(); //returns the time of the switch activation
         Serial.println(switchNAME[0]);
         appendFile(SD, "/data.txt", switchNAME[0]);
         appendFile(SD, "/data.txt", "\n");
         digitalWrite(LED_SWITCH, HIGH);   // turn the LED on (HIGH is the voltage level)
         ledState_SWITCH=1;
-        flagWRITE_HTTP=1;
+        flagWRITE_HTTP=1;- //activate flag to send socket to webserver (DATE + TIME + SWITCH ACTION)
       }
       if (buttonState == HIGH){
         digitalWrite(LED_SWITCH, LOW);   // turn the LED on (HIGH is the voltage level)
