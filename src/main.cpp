@@ -21,7 +21,7 @@ String timeString;
 //RTC Object
 RTC_DS3231 RTC;
 
-int flagNTPTime = 0;
+int flagNTPTime, ledSD_State = 0;
 int WiFiLost = 0;
 
 //time variables for SD Card LED when an append happens

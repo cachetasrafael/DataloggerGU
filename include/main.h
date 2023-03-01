@@ -21,8 +21,8 @@
 #define TIME_OFFSET 0 // Eastern Time (US & Canada)
 
 //WiFi SSID and PW
-#define WIFI_SSID "DataloggerAAM"
-#define WIFI_PASSWORD "datalogger321"
+#define WIFI_SSID "NOS_Internet_75F5"
+#define WIFI_PASSWORD "41686575"
 
 //Pins
 const int SD_CS = 5; // chip select pin for SD card

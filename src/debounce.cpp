@@ -43,7 +43,7 @@ void debounce(){
         appendFile(SD, "/data.txt", "\n");
         digitalWrite(LED_SWITCH, HIGH);   // turn the LED on (HIGH is the voltage level)
         ledState_SWITCH=1;
-        flagWRITE_HTTP=1;- //activate flag to send socket to webserver (DATE + TIME + SWITCH ACTION)
+        flagWRITE_HTTP=1; //activate flag to send socket to webserver (DATE + TIME + SWITCH ACTION)
       }
       if (buttonState == HIGH){
         digitalWrite(LED_SWITCH, LOW);   // turn the LED on (HIGH is the voltage level)
